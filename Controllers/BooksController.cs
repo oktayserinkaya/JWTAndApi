@@ -1,6 +1,8 @@
 ﻿using JWTAndApi.DTO;
 using JWTAndApi.Interfaces;
 using JWTAndApi.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +10,8 @@ namespace JWTAndApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+    [EnableCors("MyPolicy")]
     public class BooksController(IBookService bookService) : ControllerBase
     {
         /*
@@ -110,7 +114,7 @@ namespace JWTAndApi.Controllers
         /// <param name="model">kitap property leri</param>
         /// <returns></returns>
         [HttpPut("UpdateBook")]
-        public async Task<IActionResult> UpdateBook([FromBody] UpdateBookDto model)
+        public async Task<IActionResult> UpdateBook([FromForm] UpdateBookDto model)
         {
             if (!ModelState.IsValid)
                 return StatusCode(400, "Hatalı istek");
